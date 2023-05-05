@@ -27,10 +27,9 @@ $ kubectl create secret generic \
 
 ## Configure ingress
 
-The proxy needs to be accessible from
-To receive http calls from AWS SNS the callback url has to be publicly accessible.
+The proxy needs to be accessible from the Internet.
 
-The below instructions show how to set up Ingress with a TLS certificate using Ingress Nginx. You can also use any other ingress-controller, inlets-pro or an Istio Gateway. Reach out to us if you need a hand.
+It could be exposed via Ingress, an Istio Gateway, or an [inlets tunnel](https://inlets.dev/).
 
 Install [cert-manager](https://cert-manager.io/docs/), which is used to manage TLS certificates.
 
@@ -74,59 +73,20 @@ EOF
 kubectl apply -f issuer-prod.yaml
 ```
 
-Create an ingress record for the openfaas-oidc-proxy:
-
-```bash
-export DOMAIN="gateway.example.com"
-
-cat > ingress.yaml <<EOF
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: openfaas-oidc-proxy
-  namespace: openfaas
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/issuer: letsencrypt-prod
-  labels:
-    app: openfaas-oidc-proxy
-spec:
-  tls:
-  - hosts:
-    - $DOMAIN
-    secretName: openfaas-oidc-proxy-cert
-  rules:
-  - host: $DOMAIN
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: openfaas-oidc-proxy
-            port:
-              number: 8080
-EOF
-```
-
-Apply the Ingress resource:
-
-```bash
-kubectl apply -f ingress.yaml
-```
-
 ## Configure values.yaml
 
 ```yaml
-# OpenFaaS gateway URL
-gatewayURL: http://gateway.openfaas:8080
-
 # The public URL to access the proxy
-publicURL: gateway.example.com
+publicURL: https://oidc-proxy.example.com
 
 # Comma separated list of repository owners for which short-lived OIDC tokens are authorized.
-# For example: openfaasltd,self-actuated
-repositoryOwners: 'openfaasltd,self-actuated'
+# For example: alexellis,self-actuated
+repositoryOwners: 'alexellis,self-actuated'
+
+ingress:
+  host: oidc-proxy.example.com
+  issuer: letsencrypt-prod
+  annotations: {}
 ```
 
 ## Install the chart
@@ -135,6 +95,7 @@ repositoryOwners: 'openfaasltd,self-actuated'
 
 ```sh
 $ helm repo add actuated https://self-actuated.github.io/charts
+$ helm repo update
 $ helm upgrade openfaas-oidc-proxy actuated/openfaas-oidc-proxy \
     --install \
     --namespace openfaas
@@ -155,11 +116,18 @@ $ helm upgrade openfaas-oidc-proxy ./chart/openfaas-oidc-proxy \
 
 Additional openfaas-oidc-proxy options in `values.yaml`.
 
-| Parameter          | Description                                                                                 | Default                        |
-| ------------------ | ------------------------------------------------------------------------------------------- | ------------------------------ |
-| `gatewayURL`       | OpenFaaS gateway URL.                                                                       | `http://gateway.openfaas:8080` |
-| `publicURL`        | The public URL to access the proxy.                                                         | `""`                           |
-| `repositoryOwners` | Comma separated list of repository owners for which short-lived OIDC tokens are authorized. | `""`                           |
+| Parameter             | Description                                                                                 | Default                        |
+| --------------------- | ------------------------------------------------------------------------------------------- | ------------------------------ |
+| `gatewayURL`          | OpenFaaS gateway URL.                                                                       | `http://gateway.openfaas:8080` |
+| `publicURL`           | The public URL to access the proxy.                                                         | `""`                           |
+| `repositoryOwners`    | Comma separated list of repository owners for which short-lived OIDC tokens are authorized. | `""`                           |
+| `ingress.enabled`     | Enable ingress.                                                                             | `true`                         |
+| `ingress.class`       | Ingress class.                                                                              | `nginx`                        |
+| `ingress.annotations` | Annotations to be added to the ingress resource                                             | `{}`                           |
+| `ingress.host`        | Hostname used for the ingress resource                                                      | `""`                           |
+| `nodeSelector`        | Node labels for pod assignment.                                                             | `{}`                           |
+| `affinity`            | Node affinity for pod assignments.                                                          | `{}`                           |
+| `tolerations`         | Node tolerations for pod assignment.                                                        | `[]`                           |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. See `values.yaml` for the default configuration.
 

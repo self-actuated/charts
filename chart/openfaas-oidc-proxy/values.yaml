@@ -16,8 +16,15 @@ gatewayURL: http://gateway.openfaas:8080
 publicURL: ""
 
 # Comma separated list of repository owners for which short-lived OIDC tokens are authorized.
-# For example: openfaasltd,self-actuated
+# For example: alexellis,self-actuated
 repositoryOwners: ""
+
+ingress:
+  enabled: true
+  class: "nginx"
+  host: ""
+  issuer: letsencrypt-prod
+  annotations: {}
 
 nameOverride: ""
 fullnameOverride: ""
