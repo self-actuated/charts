@@ -4,7 +4,7 @@ A collection of charts for [https://actuated.dev](https://actuated.dev/) related
 
 Add the charts with the following command:
 ```bash
-helm repo add actuated https://self-actuated.github.io/charts
+helm repo add actuated https://self-actuated.github.io/charts/
 ```
 
 ## Charts

@@ -94,11 +94,12 @@ ingress:
 - Add the Actuated chart repo and deploy the `openfaas-oidc-proxy` chart. We recommend installing it in the same namespace as the rest of OpenFaaS
 
 ```sh
-$ helm repo add actuated https://self-actuated.github.io/charts
+$ helm repo add actuated https://self-actuated.github.io/charts/
 $ helm repo update
 $ helm upgrade openfaas-oidc-proxy actuated/openfaas-oidc-proxy \
     --install \
-    --namespace openfaas
+    --namespace openfaas \
+    -f ./values.yaml
 ```
 
 > The above command will also update your helm repo to pull in any new releases.
