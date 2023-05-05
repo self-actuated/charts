@@ -5,7 +5,7 @@
 # You will need to create a license named "actuated-license" - see the
 # chart README for detailed instructions.
 
-image: ttl.sh/welteki/openfaas-oidc-proxy:dev
+image: ghcr.io/openfaasltd/openfaas-oidc-proxy:0.0.1
 
 replicas: 1
 
