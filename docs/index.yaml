@@ -1,0 +1,22 @@
+apiVersion: v1
+entries:
+  openfaas-oidc-proxy:
+  - apiVersion: v2
+    created: "2023-05-05T16:33:07.380645672+01:00"
+    description: Proxy for OpenFaaS for actuated customers.
+    digest: 58fa15c1d7cd07175f5e7bad6fa4474f6fcb9c3ea97a16511fd574ab6e2de4eb
+    home: https://actuated.dev/
+    keywords:
+    - openfaas
+    - actuated
+    - proxy
+    - ci
+    - github-actions
+    maintainers:
+    - email: alex@openfaas.com
+      name: alexellis
+    name: openfaas-oidc-proxy
+    urls:
+    - https://self-actuated.github.io/charts/openfaas-oidc-proxy-0.0.1.tgz
+    version: 0.0.1
+generated: "2023-05-05T16:33:07.380323931+01:00"
