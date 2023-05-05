@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ template "openfaas-oidc-proxy.name" . }}
+    component: openfaas-oidc-proxy
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ template "openfaas-oidc-proxy.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/component: openfaas-oidc-proxy
+    app.kubernetes.io/part-of: openfaas
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+  name: {{ template "openfaas-oidc-proxy.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "openfaas-oidc-proxy.name" . }}
+      component: openfaas-oidc-proxy
+
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "false"
+      labels:
+        app: {{ template "openfaas-oidc-proxy.name" . }}
+        component: openfaas-oidc-proxy
+    spec:
+      volumes:
+        - name: actuated-license
+          secret:
+            secretName: actuated-license
+        - name: auth
+          secret:
+            secretName: basic-auth
+      containers:
+        - name: proxy
+          image: {{ .Values.image }}
+          command:
+            - "/usr/bin/openfaas-oidc-proxy"
+            - "-license-file=/var/secrets/license/license"
+          env:
+            - name: port
+              value: "8080"
+            - name: gateway_url
+              value: {{ .Values.gatewayURL | quote }}
+            - name: public_url
+              value: {{ .Values.publicURL | quote }}
+            - name: repository_owner
+              value: {{ .Values.repositoryOwners | quote }}
+            - name: secret_mount_path
+              value: "/var/secrets"
+          resources:
+            {{- .Values.resources | toYaml | nindent 12 }}
+          volumeMounts:
+            - name: actuated-license
+              readOnly: true
+              mountPath: "/var/secrets/license"
+            - name: auth
+              readOnly: true
+              mountPath: "/var/secrets"
+
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

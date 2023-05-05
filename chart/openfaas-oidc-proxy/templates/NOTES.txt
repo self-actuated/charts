@@ -1,0 +1,6 @@
+Thanks for installing the openfaas-oidc-proxy. Please follow the instructions below to get you started.
+
+To watch the logs:
+
+$ kubectl logs -n {{ .Release.Namespace }} deploy/openfaas-oidc-proxy -f
+

@@ -1,0 +1,37 @@
+# The OpenFaaS OIDC Proxy is part of Actuated
+#
+# Purchase a license at https://actuated.dev
+
+# You will need to create a license named "actuated-license" - see the
+# chart README for detailed instructions.
+
+image: ttl.sh/welteki/openfaas-oidc-proxy:dev
+
+replicas: 1
+
+# OpenFaaS gateway URL
+gatewayURL: http://gateway.openfaas:8080
+
+# The public URL to access the proxy
+publicURL: ""
+
+# Comma separated list of repository owners for which short-lived OIDC tokens are authorized.
+# For example: openfaasltd,self-actuated
+repositoryOwners: ""
+
+nameOverride: ""
+fullnameOverride: ""
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "100m"
+  # limits:
+  #   memory: "256Mi"
+  #   cpu: "100m"
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ template "openfaas-oidc-proxy.name" . }}
+    component: openfaas-oidc-proxy
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  name: {{ template "openfaas-oidc-proxy.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: openfaas-oidc-proxy
