@@ -1,0 +1,32 @@
+{{ if .Values.ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: openfaas-oidc-proxy
+  namespace: {{ .Release.Namespace | quote }}
+  annotations:
+    {{- with .Values.ingress.annotations }}
+    {{ toYaml . | nindent 4 }}
+    {{- end }}
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    cert-manager.io/issuer: {{ .Values.ingress.issuer }}
+  labels:
+    app: {{ template "openfaas-oidc-proxy.name" . }}
+spec:
+  tls:
+  - hosts:
+    - "{{ .Values.ingress.host }}"
+    secretName: openfaas-oidc-proxy-cert
+  rules:
+  - host: "{{ .Values.ingress.host }}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: openfaas-oidc-proxy
+            port:
+              number: 8080
+{{ end }}
