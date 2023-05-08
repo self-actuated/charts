@@ -124,11 +124,14 @@ Additional openfaas-oidc-proxy options in `values.yaml`.
 | `repositoryOwners`    | Comma separated list of repository owners for which short-lived OIDC tokens are authorized. | `""`                           |
 | `ingress.enabled`     | Enable ingress.                                                                             | `true`                         |
 | `ingress.class`       | Ingress class.                                                                              | `nginx`                        |
+| `ingress.issuer`      | Name of cert-manager Issuer                                                                 | `letsencrypt-prod`             |
 | `ingress.annotations` | Annotations to be added to the ingress resource                                             | `{}`                           |
 | `ingress.host`        | Hostname used for the ingress resource                                                      | `""`                           |
 | `nodeSelector`        | Node labels for pod assignment.                                                             | `{}`                           |
 | `affinity`            | Node affinity for pod assignments.                                                          | `{}`                           |
 | `tolerations`         | Node tolerations for pod assignment.                                                        | `[]`                           |
+| `logs.debug`          | Print debug logs                                                                            | `false`                        |
+| `logs.format`         | The log encoding format. Supported values: `json` or `console`                              | `console`                      |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. See `values.yaml` for the default configuration.
 
