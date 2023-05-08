@@ -55,6 +55,10 @@ spec:
               value: {{ .Values.repositoryOwners | quote }}
             - name: secret_mount_path
               value: "/var/secrets"
+            - name: "debug"
+              value: "{{ .Values.logs.debug }}"
+            - name: "log_encoding"
+              value: "{{ .Values.logs.format }}"
           resources:
             {{- .Values.resources | toYaml | nindent 12 }}
           volumeMounts:
