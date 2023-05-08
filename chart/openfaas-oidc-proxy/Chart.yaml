@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Proxy for OpenFaaS for actuated customers.
 name: openfaas-oidc-proxy
-version: 0.0.1
+version: 0.0.2
 home: https://actuated.dev/
 keywords:
 - openfaas
