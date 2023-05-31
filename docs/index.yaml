@@ -2,7 +2,25 @@ apiVersion: v1
 entries:
   openfaas-oidc-proxy:
   - apiVersion: v2
-    created: "2023-05-08T10:49:42.280727+01:00"
+    created: "2023-05-31T15:20:24.482815931+01:00"
+    description: Proxy for OpenFaaS for actuated customers.
+    digest: 645e84d527f5bc00c9a50a7fbfc2991e5da85321126499405c5ea59f3fa7fde7
+    home: https://actuated.dev/
+    keywords:
+    - openfaas
+    - actuated
+    - proxy
+    - ci
+    - github-actions
+    maintainers:
+    - email: alex@openfaas.com
+      name: alexellis
+    name: openfaas-oidc-proxy
+    urls:
+    - https://self-actuated.github.io/charts/openfaas-oidc-proxy-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v2
+    created: "2023-05-31T15:20:24.482588483+01:00"
     description: Proxy for OpenFaaS for actuated customers.
     digest: c25b2cdbd2b5bcea4d1f00c34be1a8c911b54889ccc5dd4f1c263197ce2d7499
     home: https://actuated.dev/
@@ -20,7 +38,7 @@ entries:
     - https://self-actuated.github.io/charts/openfaas-oidc-proxy-0.0.2.tgz
     version: 0.0.2
   - apiVersion: v2
-    created: "2023-05-08T10:49:42.280492+01:00"
+    created: "2023-05-31T15:20:24.482278292+01:00"
     description: Proxy for OpenFaaS for actuated customers.
     digest: 58fa15c1d7cd07175f5e7bad6fa4474f6fcb9c3ea97a16511fd574ab6e2de4eb
     home: https://actuated.dev/
@@ -37,4 +55,4 @@ entries:
     urls:
     - https://self-actuated.github.io/charts/openfaas-oidc-proxy-0.0.1.tgz
     version: 0.0.1
-generated: "2023-05-08T10:49:42.280096+01:00"
+generated: "2023-05-31T15:20:24.481877849+01:00"
